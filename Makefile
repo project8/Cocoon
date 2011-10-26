@@ -11,4 +11,8 @@ pymonarch:
 
 Rmonarch:
 	swig -r -Imonarch monarch.i
-	MAKEFLAGS="CFLAGS=-Imonarch\ -include\ stdlib.h" PKG_LIBS="monarch.c" R CMD SHLIB -Imonarch  monarch_wrap.c
+	gcc -shared -o libmonarch.so monarch/monarch.o -lmxml
+#	gcc -fpic -I/Users/mcbrie2/Downloads/R-2.13.1/include  -I/usr/local/include -Imonarch -include stdlib.h -c monarch_wrap.c -o monarch_wrap.o
+#	gcc -shared -Imonarch -lmxml -o _monarch.so monarch_wrap.o
+
+	MAKEFLAGS='CFLAGS=-Imonarch\ -include\ stdlib.h' PKG_LIBS="monarch/monarch.c" R CMD SHLIB monarch_wrap.c -lmxml -lmonarch -L.
